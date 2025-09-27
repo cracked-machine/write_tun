@@ -1,4 +1,7 @@
 #!/bin/bash
+# Usage: ./build.sh <BuildType> <Architecture>
+# Example: ./build.sh Debug x86_64-linux-gnu
+
 BUILD=$1
 ARCH=$2
 

@@ -1,6 +1,7 @@
 set(TARGET CppTestApp)
 add_executable(${TARGET} 
     ${CMAKE_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_SOURCE_DIR}/src/TunDevice.cpp
 )
 
 target_link_libraries(${TARGET} PRIVATE 

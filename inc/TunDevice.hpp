@@ -1,0 +1,70 @@
+#pragma once
+
+#include <cstddef>
+#include <string>
+
+/**
+ * @brief Simple TUN device wrapper class that provides a stream-like interface
+ *
+ * This class encapsulates the creation and management of a TUN network interface,
+ * providing convenient methods for writing packets to the interface.
+ */
+class TunDevice
+{
+private:
+  int fd_; ///< File descriptor for the TUN device
+
+public:
+  /**
+   * @brief Construct a new TUN Device object
+   *
+   * @param dev The name of the TUN device to create (e.g., "tun0")
+   * @throws std::runtime_error if device creation fails
+   */
+  explicit TunDevice( const std::string &dev );
+
+  /**
+   * @brief Destroy the TUN Device object
+   *
+   * Automatically closes the TUN device file descriptor
+   */
+  ~TunDevice();
+
+  // Disable copy construction and assignment
+  TunDevice( const TunDevice & ) = delete;
+  TunDevice &operator=( const TunDevice & ) = delete;
+
+  // Enable move construction and assignment
+  TunDevice( TunDevice &&other ) noexcept;
+  TunDevice &operator=( TunDevice &&other ) noexcept;
+
+  /**
+   * @brief Write data to the TUN device
+   *
+   * @param data Pointer to the data to write
+   * @param size Number of bytes to write
+   * @return Number of bytes written, or -1 on error
+   */
+  ssize_t write( const char *data, std::size_t size );
+
+  /**
+   * @brief Flush any buffered data
+   *
+   * Note: TUN devices typically don't require explicit flushing
+   */
+  void flush();
+
+  /**
+   * @brief Check if the device is in a good state
+   *
+   * @return true if the device is open and ready for I/O
+   */
+  bool good() const;
+
+  /**
+   * @brief Get the file descriptor for the TUN device
+   *
+   * @return The file descriptor, or -1 if invalid
+   */
+  int fd() const;
+};

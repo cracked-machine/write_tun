@@ -43,8 +43,7 @@
             "type": "pickString",
             "description": "Select target architecture",
             "options": [
-                "x86_64-linux-gnu",
-                "x86_64-w64-mingw32"
+                "x86_64-linux-gnu"
             ],
             "default": "x86_64-linux-gnu"
         }
