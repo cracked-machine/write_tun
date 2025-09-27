@@ -1,0 +1,12 @@
+CompileFlags:
+  CompilationDatabase: build-x86_64-w64-mingw32
+  Add:
+    - -isystem/workspaces/loopback_tests/build/_deps/spdlog-src/include
+    - -isystem/workspaces/loopback_tests/build/_deps/entt-src/src
+    - -isystem/workspaces/loopback_tests/inc
+    - -isystem/workspaces/loopback_tests/inc/Logging
+  Remove:
+    - -m*
+    - -f*
+Index:
+  Background: Build

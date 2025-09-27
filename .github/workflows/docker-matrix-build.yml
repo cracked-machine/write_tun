@@ -1,0 +1,32 @@
+name: Docker Matrix Build
+
+on:
+  push:
+    # Run on all branches (no branch filter)
+  pull_request:
+    # Run on all branches (no branch filter)
+
+jobs:
+  docker-matrix-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config: [Debug, Release, RelWithDebInfo, MinSizeRel]
+        arch: [x86_64-linux-gnu, x86_64-w64-mingw32]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Build Docker image
+      run: |
+        docker build -t cpp-project:${{ matrix.config }}-${{ matrix.arch }} .
+    
+    - name: Run build script in Docker
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}:/workspace \
+          -w /workspace \
+          --user root \
+          cpp-project:${{ matrix.config }}-${{ matrix.arch }} \
+          ./scripts/build.sh ${{ matrix.config }} ${{ matrix.arch }}
