@@ -2,7 +2,24 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
     "name": "C++ General",
-    "build": { "dockerfile": "Dockerfile" },
+    "build": 
+    { 
+        "dockerfile": "Dockerfile",
+        // pas current user id into dockerfile
+        "args": {
+            "USER_UID": "${localEnv:USER_UID:1000}",
+            "USER_GID": "${localEnv:USER_GID:1000}"
+        }
+    },
+
+    "runArgs": [
+        "--cap-add=NET_ADMIN",  // Required for setting up TUN interfaces, veth pairs, namespaces.
+        "--cap-add=NET_RAW",    // Allows sending/receiving raw IP packets, accessing raw sockets
+        "--cap-add=SYS_ADMIN",  // Required for mount operations and namespace creation
+        "--security-opt", "apparmor=unconfined",  // disable apparmour profile that blocks mount syscall
+        "--device=/dev/net/tun"   // Mounts the TUN character device into the container.
+        // "--privileged"
+    ],
     "customizations": {
         "vscode": {
             "extensions": [
